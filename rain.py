@@ -13,9 +13,9 @@ class Drop(Sprite):
         self.rect.x=self.rect.width
         self.rect.y=self.rect.height
         #збереження точної горизонтальної позиції
-        self.y=float(self.rect.x)
+        self.y=float(self.rect.y)
     def update(self):
-        self.y+=1
+        self.y+=3
         self.rect.y=self.y
     def blitme(self):
         self.screen.blit(self.image, self.rect)
@@ -62,7 +62,7 @@ class Rain:
         pygame.display.flip()
     def check_edges(self):
         for drop in self.stars:
-            if drop.rect.top>self.screen_height:
+            if drop.rect.top>self.screen_height-200:
                 self.stars.remove(drop)
 ss=Rain()
 ss.run_game()
