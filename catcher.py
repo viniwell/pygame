@@ -20,6 +20,15 @@ class Ball:
         self.rect.y=self.y
     def blitme(self):
         self.screen.blit(self.image, self.rect)
+class Hearts:
+    def __init__(self, catcher_game, num):
+        self.screen=catcher_game.screen
+        self.image=pygame.image.load('heart.png')
+        self.rect=self.image.get_rect()
+        self.rect.bottom=41
+        self.rect.left=self.screen.get_rect().width-int(num)*75
+    def blitme(self):
+        self.screen.blit(self.image, self.rect)
 class Catcher:
     def __init__(self, catcher_game):
         self.screen=catcher_game.screen
@@ -55,11 +64,12 @@ class Game:
         self.screen_width = self.screen.get_rect().width
         self.screen_height = self.screen.get_rect().height
         self.catcher=Catcher(catcher_game=self)
-        self.ball=Ball(x=random.randint(0, self.screen_width), y=random.randint(0, self.screen_height-200),catcher_game=self)
+        self.ball=Ball(x=random.randint(10, self.screen_width-10), y=random.randint(0, self.screen_height-200),catcher_game=self)
         self.catcher.rect.bottom=self.screen.get_rect().bottom
         self.loses=0
         self.game=True
         self.game_over=Gameover(self)
+        self.hearts=[Hearts(self, 1),Hearts(self, 2),Hearts(self, 3)]
     def run_game(self):
         while True:
             if self.game:
@@ -101,8 +111,12 @@ class Game:
         if self.game:
             self.catcher.blitme()
             self.ball.blitme()
+            self._check_hearts()
         else:
             self.game_over.blitme()
         pygame.display.flip()
+    def _check_hearts(self):
+        for i in range(3-self.loses):
+            self.hearts[i].blitme()
 game=Game()
 game.run_game()
